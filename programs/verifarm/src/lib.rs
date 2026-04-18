@@ -8,12 +8,38 @@ use instructions::farmer::*;
 use instructions::asset::*;
 use instructions::risk::*;
 use instructions::loan::*;
+use instructions::admin::*;
 
 declare_id!("9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N");
 
 #[program]
 pub mod verifarm {
     use super::*;
+
+    // ── Admin ────────────────────────────────────────────────────────────────
+    pub fn initialize_program(ctx: Context<InitializeProgram>) -> Result<()> {
+        instructions::admin::initialize_program::handler(ctx)
+    }
+
+    pub fn register_oracle(ctx: Context<RegisterOracle>, oracle: Pubkey) -> Result<()> {
+        instructions::admin::manage_oracle::register_oracle_handler(ctx, oracle)
+    }
+
+    pub fn revoke_oracle(ctx: Context<RevokeOracle>, oracle: Pubkey) -> Result<()> {
+        instructions::admin::manage_oracle::revoke_oracle_handler(ctx, oracle)
+    }
+
+    pub fn register_officer(ctx: Context<RegisterOfficer>, officer: Pubkey) -> Result<()> {
+        instructions::admin::manage_officer::register_officer_handler(ctx, officer)
+    }
+
+    pub fn revoke_officer(ctx: Context<RevokeOfficer>, officer: Pubkey) -> Result<()> {
+        instructions::admin::manage_officer::revoke_officer_handler(ctx, officer)
+    }
+
+    pub fn update_farmer_status(ctx: Context<UpdateFarmerStatus>, args: UpdateFarmerStatusArgs) -> Result<()> {
+        instructions::admin::update_farmer_status::handler(ctx, args)
+    }
 
     // ── Farmer Registry ──────────────────────────────────────────────────────
     pub fn register_farmer(ctx: Context<RegisterFarmer>, args: RegisterFarmerArgs) -> Result<()> {

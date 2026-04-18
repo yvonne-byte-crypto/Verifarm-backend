@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::state::farmer::Farmer;
 use crate::state::risk_oracle::{RiskScore, RiskTier};
+use crate::state::admin::OracleEntry;
 use crate::error::VeriFarmError;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
@@ -28,7 +29,15 @@ pub struct SubmitRiskScore<'info> {
     )]
     pub farmer: Account<'info, Farmer>,
 
-    /// Trusted oracle keypair — validated against oracle_registry PDA (TODO: add registry)
+    /// Oracle must be registered and active in the OracleRegistry
+    #[account(
+        seeds = [OracleEntry::SEED, oracle.key().as_ref()],
+        bump = oracle_entry.bump,
+        constraint = oracle_entry.active @ VeriFarmError::UnauthorizedOracle,
+        constraint = oracle_entry.oracle == oracle.key() @ VeriFarmError::UnauthorizedOracle,
+    )]
+    pub oracle_entry: Account<'info, OracleEntry>,
+
     #[account(mut)]
     pub oracle: Signer<'info>,
 
