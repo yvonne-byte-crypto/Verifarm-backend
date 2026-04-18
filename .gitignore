@@ -1,0 +1,8 @@
+.env
+target/
+node_modules/
+.anchor/
+**/*.rs.bk
+oracle-keypair.json
+admin-keypair.json
+test-keypair.json

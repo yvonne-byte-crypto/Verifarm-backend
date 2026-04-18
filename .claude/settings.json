@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "helius": {
+      "command": "npx",
+      "args": ["-y", "@helius-labs/helius-mcp@latest"],
+      "env": {
+        "HELIUS_API_KEY": "${HELIUS_API_KEY}"
+      }
+    },
+    "anchor": {
+      "command": "npx",
+      "args": ["-y", "anchor-mcp@latest"]
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash(anchor build)",
+      "Bash(anchor test)",
+      "Bash(anchor deploy*)",
+      "Bash(solana airdrop*)",
+      "Bash(solana balance*)",
+      "Bash(solana program show*)",
+      "Bash(yarn install)",
+      "Bash(yarn test)",
+      "Bash(cargo build*)",
+      "Bash(cargo test*)",
+      "Bash(cargo clippy*)"
+    ]
+  }
+}
