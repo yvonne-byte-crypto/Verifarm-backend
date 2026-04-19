@@ -1,5 +1,6 @@
 use anchor_lang::prelude::*;
 use crate::state::loan::{Loan, LoanStatus};
+use crate::state::admin::LoanOfficerEntry;
 use crate::error::VeriFarmError;
 
 #[derive(Accounts)]
@@ -11,9 +12,15 @@ pub struct ApproveLoan<'info> {
     )]
     pub loan: Account<'info, Loan>,
 
-    /// Loan officer with authority to approve
+    #[account(
+        seeds = [LoanOfficerEntry::SEED, loan_officer.key().as_ref()],
+        bump = officer_entry.bump,
+        constraint = officer_entry.active @ VeriFarmError::UnauthorizedOracle,
+        constraint = officer_entry.officer == loan_officer.key() @ VeriFarmError::UnauthorizedOracle,
+    )]
+    pub officer_entry: Account<'info, LoanOfficerEntry>,
+
     pub loan_officer: Signer<'info>,
-    // TODO: add loan_officer_registry PDA to restrict who can approve
 }
 
 pub fn handler(ctx: Context<ApproveLoan>) -> Result<()> {

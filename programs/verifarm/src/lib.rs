@@ -73,6 +73,14 @@ pub mod verifarm {
         instructions::loan::approve::handler(ctx)
     }
 
+    pub fn initialize_vault(ctx: Context<InitializeVault>) -> Result<()> {
+        instructions::loan::initialize_vault::handler(ctx)
+    }
+
+    pub fn disburse_loan(ctx: Context<DisburseLoan>) -> Result<()> {
+        instructions::loan::disburse::handler(ctx)
+    }
+
     pub fn repay_loan(ctx: Context<RepayLoan>, args: RepayLoanArgs) -> Result<()> {
         instructions::loan::repay::handler(ctx, args)
     }

@@ -10,13 +10,17 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.0",
-    "@solana/web3.js": "^1.95.0",
-    "@solana/spl-token": "^0.4.9"
+    "@solana/spl-token": "^0.4.9",
+    "@solana/web3.js": "^1.95.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.0.0",
+    "@types/node": "^25.6.0",
+    "anchor-bankrun": "^0.5.0",
     "chai": "^4.3.4",
+    "mocha": "^11.7.5",
+    "solana-bankrun": "^0.4.0",
     "ts-mocha": "^10.0.0",
     "typescript": "^5.0.0"
   }
