@@ -1,9 +1,8 @@
 # 🌾 VeriFarm — Solana Anchor Backend
 
-> Oracle infrastructure for agricultural credit in East Africa.
-> Connecting on-the-ground verification nodes to DeFi liquidity 
-> rails so licensed MFIs can lend to farmers who have always been 
-> creditworthy but never provable.
+> DePIN oracle network for physical agricultural asset 
+> verification on Solana — field nodes read farms, 
+> Solana records the truth, DeFi lends with confidence.
 
 ![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?style=flat&logo=solana)
 ![Anchor](https://img.shields.io/badge/Anchor-0.31.0-blue)
@@ -25,6 +24,29 @@
 📁 [Frontend Repo](https://github.com/yvonne-byte-crypto/verifarm-frontend)
 
 ---
+
+## 💰 Capital Model
+
+VeriFarm does not hold or lend capital directly.
+
+**How it works:**
+- Licensed MFIs and SACCOs in Kenya and Tanzania 
+  provide the regulated loan capital
+- VeriFarm provides the verification and scoring rails
+- Initial pilot capital: partnering with 2 target MFIs 
+  in Tanzania and Kenya for the Mainnet launch
+- VeriFarm earns an oracle attestation fee per verified 
+  farmer — not a lending margin
+
+**Why this matters:**
+- Regulatory compliance sits with licensed partners
+- VeriFarm never touches customer funds
+- DeFi liquidity can flow through compliant 
+  institutional layer as we scale
+- Farmers get credit. MFIs get reach. 
+  VeriFarm gets the oracle fee.
+
+--- 
 
 ## 🏗️ Milestone Progress
 
