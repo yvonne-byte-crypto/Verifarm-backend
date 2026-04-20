@@ -1,8 +1,8 @@
 # 🌾 VeriFarm — Solana Anchor Backend
 
-> DePIN oracle network for physical agricultural asset 
-> verification on Solana — field nodes read farms, 
-> Solana records the truth, DeFi lends with confidence.
+> VeriFarm is the trust bridge between smallholder farmers and lending institutions 
+> verifying assets on one side, delivering confident lending decisions on the other,
+> and managing the full loan lifecycle on-chain until every loan is repaid.
 
 ![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?style=flat&logo=solana)
 ![Anchor](https://img.shields.io/badge/Anchor-0.31.0-blue)
