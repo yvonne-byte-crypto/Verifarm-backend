@@ -219,6 +219,9 @@ anchor deploy --provider.cluster devnet
 - [x] Agent staking anti-fraud layer
 - [x] Staleness TTL on boundary attestations
 - [ ] Africa's Talking USSD production number
+- [ ] Enhanced livestock attestation — mandatory photo 
+  hash on-chain (Arweave) + higher stake requirement 
+  (Phase 2)
 - [ ] Continuous livestock health oracle
 - [ ] MFI partner API integration
 - [ ] Geographic diversity enforcement
