@@ -90,6 +90,7 @@ on-the-ground human nodes:
 | Human | Field agent physical validation | Immutable verification trail |
 | Collateral | 50% LTV limit | Reflects agricultural asset illiquidity |
 
+_Land boundary coordinates are hashed before on-chain storage and are only accessible to program-gated MFI PDAs. Raw GPS data is never publicly readable. Farmer consent is logged on-chain during USSD registration in compliance with Kenya's Data Protection Act 2019 and Tanzania's PDPA framework._
 ---
 
 ## 🤖 AI Risk Scoring
