@@ -6,7 +6,7 @@
 
 ![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?style=flat&logo=solana)
 ![Anchor](https://img.shields.io/badge/Anchor-0.31.0-blue)
-![Tests](https://img.shields.io/badge/Tests-37%20Passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-38%20Passing-brightgreen)
 ![Status](https://img.shields.io/badge/Status-Live%20on%20Devnet-brightgreen)
 ![Built With](https://img.shields.io/badge/Built%20with-Claude%20Code%20%2B%20solana.new-orange)
 
@@ -17,7 +17,7 @@
 **Program ID:** `9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N`
 **Network:** Devnet
 **Framework:** Anchor 0.31.0
-**Tests:** 37 bankrun tests passing
+**Tests:** 38 bankrun tests passing
 
 🔗 [View on Solana Explorer](https://explorer.solana.com/address/9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N?cluster=devnet)
 🖥️ [Frontend Dashboard](https://verifarm-frontend.vercel.app)
@@ -34,7 +34,7 @@
 | M2 | Loan disbursement + USDC vault initialization | ✅ Complete |
 | M3 | Wallet connection + chain status + AdminConfig PDA | ✅ Complete |
 | M4 | Live on-chain data feeds | ✅ Complete |
-| M5 | Full bankrun test suite — 37 tests passing | ✅ Complete |
+| M5 | Full bankrun test suite — 38 tests passing | ✅ Complete |
 | M6 | Agent staking anti-fraud layer | ✅ Complete |
 
 ---
@@ -194,7 +194,7 @@ yarn install
 anchor test
 
 # Expected output:
-# 37 passing tests
+# 38 passing tests
 # 0 failing
 ```
 
@@ -218,7 +218,7 @@ anchor deploy --provider.cluster devnet
 - [x] USDC vault + loan disbursement
 - [x] Wallet connection + chain status
 - [x] Live on-chain data feeds
-- [x] 37 bankrun tests passing
+- [x] 38 bankrun tests passing
 - [x] Agent staking anti-fraud layer
 - [x] Staleness TTL on boundary attestations
 - [ ] Africa's Talking USSD production number
