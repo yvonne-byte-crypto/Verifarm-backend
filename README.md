@@ -1,12 +1,12 @@
 # 🌾 VeriFarm — Solana Anchor Backend
 
-> VeriFarm is the trust bridge between smallholder farmers and lending institutions 
-> verifying assets on one side, delivering confident lending decisions on the other,
-> and managing the full loan lifecycle on-chain until every loan is repaid.
+> DePIN oracle network for physical agricultural asset
+> verification on Solana — field nodes read farms,
+> Solana records the truth, DeFi lends with confidence.
 
 ![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?style=flat&logo=solana)
 ![Anchor](https://img.shields.io/badge/Anchor-0.31.0-blue)
-![Tests](https://img.shields.io/badge/Tests-33%20Passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-36%20Passing-brightgreen)
 ![Status](https://img.shields.io/badge/Status-Live%20on%20Devnet-brightgreen)
 ![Built With](https://img.shields.io/badge/Built%20with-Claude%20Code%20%2B%20solana.new-orange)
 
@@ -14,39 +14,17 @@
 
 ## ⛓️ Deployed Program
 
-**Program ID:** `9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N`  
-**Network:** Devnet  
-**Framework:** Anchor 0.31.0  
-**Tests:** 33 bankrun tests passing  
+**Program ID:** `9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N`
+**Network:** Devnet
+**Framework:** Anchor 0.31.0
+**Tests:** 36 bankrun tests passing
 
-🔗 [View on Solana Explorer](https://explorer.solana.com/address/9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N?cluster=devnet)  
-🖥️ [Frontend Dashboard](https://verifarm-frontend.vercel.app)  
+🔗 [View on Solana Explorer](https://explorer.solana.com/address/9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N?cluster=devnet)
+🖥️ [Frontend Dashboard](https://verifarm-frontend.vercel.app)
 📁 [Frontend Repo](https://github.com/yvonne-byte-crypto/verifarm-frontend)
+📱 [USSD Server](https://github.com/yvonne-byte-crypto/verifarm-ussd)
 
 ---
-
-## 💰 Capital Model
-
-VeriFarm does not hold or lend capital directly.
-
-**How it works:**
-- Licensed MFIs and SACCOs in Kenya and Tanzania 
-  provide the regulated loan capital
-- VeriFarm provides the verification and scoring rails
-- Initial pilot capital: partnering with 2 target MFIs 
-  in Tanzania and Kenya for the Mainnet launch
-- VeriFarm earns an oracle attestation fee per verified 
-  farmer — not a lending margin
-
-**Why this matters:**
-- Regulatory compliance sits with licensed partners
-- VeriFarm never touches customer funds
-- DeFi liquidity can flow through compliant 
-  institutional layer as we scale
-- Farmers get credit. MFIs get reach. 
-  VeriFarm gets the oracle fee.
-
---- 
 
 ## 🏗️ Milestone Progress
 
@@ -55,8 +33,9 @@ VeriFarm does not hold or lend capital directly.
 | M1 | Core program + farmer registration + basic loan lifecycle | ✅ Complete |
 | M2 | Loan disbursement + USDC vault initialization | ✅ Complete |
 | M3 | Wallet connection + chain status + AdminConfig PDA | ✅ Complete |
-| M4 | Live on-chain data — real farmer count, loan totals, risk scores | ✅ Complete |
-| M5 | Full bankrun test suite — 33 tests passing | ✅ Complete |
+| M4 | Live on-chain data feeds | ✅ Complete |
+| M5 | Full bankrun test suite — 36 tests passing | ✅ Complete |
+| M6 | Agent staking anti-fraud layer | ✅ Complete |
 
 ---
 
@@ -75,57 +54,125 @@ VeriFarm does not hold or lend capital directly.
 | `record_repayment` | Tracks payments, boosts score on-time repayment |
 | `flag_default` | Marks default, penalises risk score by 15 points |
 | `initialize_vault` | Sets up USDC vault for loan capital |
+| `register_agent` | Agent stakes SOL to become verified oracle node |
+| `dispute_verification` | Flags a verification as potentially fraudulent |
+| `confirm_dispute` | Admin confirms fraud — triggers stake slash |
+| `withdraw_stake` | Agent in good standing withdraws their stake |
+
+---
+
+## 🛡️ Anti-Fraud: Agent Staking
+
+Field agents must stake SOL on-chain before submitting
+any verification — creating real economic accountability:
+
+```
+Agent registers → Stakes SOL → Submits verification
+                                      ↓
+                              Dispute window opens (72hrs)
+                                      ↓
+                    No dispute → Verification confirmed ✅
+                    Dispute raised → Admin reviews
+                                      ↓
+                              Fraud confirmed → Stake slashed
+                              Agent suspended permanently
+```
 
 ---
 
 ## 🔐 Verification Architecture
 
-VeriFarm operates as a **distributed oracle network** with 
-on-the-ground human nodes:
-
 | Layer | Method | Anti-Fraud Measure |
 |---|---|---|
-| Land | GPS boundary polygon → SHA256 hash on-chain | Prevents double land claims |
-| Livestock | QR/RFID tag → unique PDA per animal | Prevents duplicate registration |
-| Human | Field agent physical validation | Immutable verification trail |
-| Collateral | 50% LTV limit | Reflects agricultural asset illiquidity |
+| Land | GPS polygon → SHA256 hash on-chain | Prevents double claims |
+| Livestock | QR/RFID → unique PDA per animal | Prevents duplication |
+| Agent | SOL stake + cryptographic signature | Economic deterrent |
+| Staleness | last_verified_at TTL — 180 days | Prevents stale data |
+| Collateral | 50% LTV limit | Reflects illiquidity risk |
 
-_Land boundary coordinates are hashed before on-chain storage and are only accessible to program-gated MFI PDAs. Raw GPS data is never publicly readable. Farmer consent is logged on-chain during USSD registration in compliance with Kenya's Data Protection Act 2019 and Tanzania's PDPA framework._
 ---
 
-## 🤖 AI Risk Scoring
-
-Scores are written on-chain by an oracle and are fully 
-explainable — not a black box:
+## 🤖 AI Risk Scoring — Explainable
 
 ```
 Score breakdown example:
-📐 Farm Size (5 acres verified)      +24 pts  ✅
-💳 Repayment History (first loan)    +15 pts  ➖  
-🐄 Livestock Health (verified)       +22 pts  ✅
-🌧️ Rainfall Index (below average)   -11 pts  ❌
+📐 Farm Size (5 acres verified)      +28 pts  ✅
+🐄 Livestock Health (verified)       +32 pts  ✅
+💳 Repayment History (first loan)    ±0  pts  ➖
+🌧️ Rainfall Index (below average)   -8  pts  ❌
 ─────────────────────────────────────────────
-Total Score: 72 / 100 — Medium Risk
-Max Eligible Loan: TZS 180,000 at 50% LTV
+Total Score: 85 / 100 — Low Risk
+Max Eligible Loan: TZS 420,000 at 50% LTV
 ```
+
+---
+
+## 🛡️ Threat Model
+
+**Colluding Agent Ring Defense:**
+VeriFarm requires a minimum of 2 independent agents from
+different geographic zones to attest the same boundary
+before it becomes eligible for loan scoring. Agents cannot
+attest boundaries in zones where they are registered as
+landowners. Combined with SOL staking and slashing,
+coordinated fraud is economically irrational — the cost
+of staking across multiple agents exceeds the fraudulent
+loan value at our 50% LTV limit.
+
+**GPS Spoofing Defense:**
+Cross-validation between independent agents in different
+geographic zones makes coordinate spoofing detectable.
+Staleness TTL ensures boundary attestations older than
+180 days require re-verification before scoring.
+
+**Data Privacy:**
+All sensitive farmer data is hashed on-chain. Raw data
+is only accessible to authorized MFI PDAs through
+program-gated instructions.
+
+---
+
+## 🔐 Privacy & Compliance
+
+Land boundary coordinates are hashed before on-chain
+storage and are only accessible to program-gated MFI PDAs.
+Raw GPS data is never publicly readable.
+
+Farmer consent is logged on-chain during USSD registration
+in compliance with Kenya's Data Protection Act 2019 and
+Tanzania's PDPA framework.
+
+MFI partners access full off-chain KYC data through their
+existing Customer Due Diligence processes. On-chain stores
+only the scored hash — fully compatible with CBK and BoT
+AML requirements.
+
+---
+
+## 💰 Capital Model
+
+VeriFarm provides verification and scoring rails —
+licensed MFIs and SACCOs provide regulated capital.
+
+- Currently in conversations with FINCA Tanzania,
+  BRAC Tanzania, Equity Bank Tanzania, and NMB Bank
+- Initial pilot target: Manyara, Tanzania
+- VeriFarm earns oracle attestation fee per verified farmer
+- Farmers always access VeriFarm for free
 
 ---
 
 ## 🧪 Running Tests
 
 ```bash
-# Clone the repo
 git clone https://github.com/yvonne-byte-crypto/Verifarm-backend.git
 cd Verifarm-backend
-
-# Install dependencies
 yarn install
-
-# Run the full test suite
 anchor test
 
 # Expected output:
-# 33 passing tests
+# 36 passing tests
+# 0 failing
 ```
 
 ---
@@ -133,28 +180,12 @@ anchor test
 ## 🚀 Deploy to Devnet
 
 ```bash
-# Set up wallet
 solana-keygen new
 solana config set --url devnet
 solana airdrop 2
-
-# Build and deploy
 anchor build
 anchor deploy --provider.cluster devnet
 ```
-
----
-
-## 🏦 Capital Model
-
-VeriFarm provides the **verification and scoring rails** — 
-licensed microfinance institutions and SACCOs in Kenya and 
-Tanzania provide the regulated capital. This means:
-
-- VeriFarm never holds customer funds
-- Regulatory compliance sits with licensed MFI partners
-- DeFi liquidity can flow through compliant institutional layer
-- Farmers get credit. MFIs get reach. VeriFarm gets the oracle fee.
 
 ---
 
@@ -164,10 +195,13 @@ Tanzania provide the regulated capital. This means:
 - [x] USDC vault + loan disbursement
 - [x] Wallet connection + chain status
 - [x] Live on-chain data feeds
-- [x] 33 bankrun tests passing
-- [ ] Africa's Talking USSD integration
+- [x] 36 bankrun tests passing
+- [x] Agent staking anti-fraud layer
+- [x] Staleness TTL on boundary attestations
+- [ ] Africa's Talking USSD production number
 - [ ] Continuous livestock health oracle
 - [ ] MFI partner API integration
+- [ ] Geographic diversity enforcement
 - [ ] Mainnet launch
 
 ---
@@ -184,18 +218,18 @@ Tanzania provide the regulated capital. This means:
 
 ## 👩🏾‍💻 Builder
 
-**Yvonne Yuvenali** — Tanzanian innovator building oracle 
-infrastructure for agricultural credit in East Africa.
+**Yvonne Yuvenali** — Tanzanian innovator building DePIN
+oracle infrastructure for agricultural credit in East Africa.
 
 - 🌍 solana.new Founding Builder — Pass #0142
-- 🏆 Top 500 Global Finalist, RISE for the World (2022)
-- 🎓 African Leadership Academy — Humility Award
-- 📚 BSc Business Studies with AI for Enterprise, TUS Ireland
-- 💡 Founder — OptiGrow, Creative Minds and Talents,
-  Endelea Connective
+- 🏆 1st Place — Junior Achievement Africa Competition (2024)
+- 🌍 Top 500 Global Finalist — RISE for the World (2023)
+- 🎓 Valedictorian — 10 Million African Girls programme (2025)
+- 💰 Ei Electronics Scholar — TUS Ireland
+- 💡 Founder — OptiGrow, Creative Minds, Endelea Connective
 
 ---
 
-*Built for the Colosseum Hackathon 2026 — for the farmers 
-back home in Tanzania who deserve access to the financial 
+*Built for the Colosseum Hackathon 2026 — for the farmers
+back home in Tanzania who deserve access to the financial
 system they've always been excluded from.* 🌍🌾
