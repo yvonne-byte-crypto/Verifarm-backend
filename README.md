@@ -6,7 +6,7 @@
 
 ![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?style=flat&logo=solana)
 ![Anchor](https://img.shields.io/badge/Anchor-0.31.0-blue)
-![Tests](https://img.shields.io/badge/Tests-23%20Passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-33%20Passing-brightgreen)
 ![Status](https://img.shields.io/badge/Status-Live%20on%20Devnet-brightgreen)
 ![Built With](https://img.shields.io/badge/Built%20with-Claude%20Code%20%2B%20solana.new-orange)
 
@@ -17,7 +17,7 @@
 **Program ID:** `9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N`  
 **Network:** Devnet  
 **Framework:** Anchor 0.31.0  
-**Tests:** 23 bankrun tests passing  
+**Tests:** 33 bankrun tests passing  
 
 🔗 [View on Solana Explorer](https://explorer.solana.com/address/9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N?cluster=devnet)  
 🖥️ [Frontend Dashboard](https://verifarm-frontend.vercel.app)  
@@ -56,7 +56,7 @@ VeriFarm does not hold or lend capital directly.
 | M2 | Loan disbursement + USDC vault initialization | ✅ Complete |
 | M3 | Wallet connection + chain status + AdminConfig PDA | ✅ Complete |
 | M4 | Live on-chain data — real farmer count, loan totals, risk scores | ✅ Complete |
-| M5 | Full bankrun test suite — 23 tests passing | ✅ Complete |
+| M5 | Full bankrun test suite — 33 tests passing | ✅ Complete |
 
 ---
 
@@ -124,7 +124,7 @@ yarn install
 anchor test
 
 # Expected output:
-# 23 passing tests
+# 33 passing tests
 ```
 
 ---
@@ -163,7 +163,7 @@ Tanzania provide the regulated capital. This means:
 - [x] USDC vault + loan disbursement
 - [x] Wallet connection + chain status
 - [x] Live on-chain data feeds
-- [x] 23 bankrun tests passing
+- [x] 33 bankrun tests passing
 - [ ] Africa's Talking USSD integration
 - [ ] Continuous livestock health oracle
 - [ ] MFI partner API integration
