@@ -9,6 +9,7 @@ Agricultural micro-lending platform for East Africa smallholder farmers built on
 - **Livestock Tagging**: Compressed NFTs (cNFTs) via MPL Bubblegum — one NFT per animal, stored on a shared merkle tree
 - **AI Risk Scoring**: Off-chain model submits scores to a trusted oracle PDA; scores expire after 30 days
 - **Loan Management**: Full lifecycle — apply → approve → disburse → repay → liquidate
+- **Agent Staking**: Anti-fraud layer — field agents stake SOL before submitting verifications; bad actors get slashed
 
 ## Program accounts (PDAs)
 
@@ -18,6 +19,37 @@ Agricultural micro-lending platform for East Africa smallholder farmers built on
 | `Asset` | `["asset", farmer_pda, asset_index]` | Verified collateral asset |
 | `RiskScore` | `["risk_score", farmer_pda]` | Latest AI score (refreshed by oracle) |
 | `Loan` | `["loan", farmer_pda, loan_index]` | Individual loan instance |
+| `AgentStake` | `["agent_stake", agent]` | Agent's staked SOL + status (Active/Suspended) |
+| `VerificationRecord` | `["verification_record", agent, farmer]` | On-chain record of a field verification |
+| `TreasuryVault` | `["treasury"]` | Collects slashed lamports from bad agents |
+
+## Agent Staking (anti-fraud)
+
+Field agents must lock **0.1 SOL minimum** to register. This stake is slashable if a verification is disputed and confirmed fraudulent.
+
+**Lifecycle:**
+```
+register_agent (stake SOL)
+  → submit_verification (creates VerificationRecord, status=Pending)
+    → dispute_verification (within 72-hour window, status=Disputed)
+      → confirm_dispute (admin-only, slashes stake to treasury, status=Slashed, agent=Suspended)
+    OR → dispute window expires → status stays Pending (cleared implicitly)
+  → withdraw_stake (only if Active + active_verifications == 0)
+```
+
+**Key constants:**
+- `MIN_STAKE_LAMPORTS = 100_000_000` (0.1 SOL)
+- `DISPUTE_WINDOW_SECS = 259_200` (72 hours)
+
+**Instructions:**
+
+| Instruction | Who calls | What it does |
+|---|---|---|
+| `register_agent` | Any signer | Stakes SOL, creates `AgentStake` PDA |
+| `submit_verification` | Active agent | Creates `VerificationRecord`, increments `active_verifications` |
+| `dispute_verification` | Admin or active agent | Flags a pending verification within dispute window |
+| `confirm_dispute` | Admin only | Slashes stake → treasury, suspends agent |
+| `withdraw_stake` | Active agent | Closes `AgentStake`, returns lamports (requires 0 pending verifications) |
 
 ## Key invariants
 
@@ -29,14 +61,11 @@ Agricultural micro-lending platform for East Africa smallholder farmers built on
 
 ## TODOs before devnet
 
-- [ ] Add `OracleRegistry` PDA — whitelist of authorized oracle pubkeys
-- [ ] Add `LoanOfficerRegistry` PDA — whitelist of authorized field officers
-- [ ] Add `update_farmer_status` instruction (admin-only, gated by admin PDA)
 - [ ] Implement Bubblegum CPI in `tag_livestock.rs`
 - [ ] Wire up USDC token vault for disburse instruction
-- [ ] Add `disburse_loan` instruction
 - [ ] Add interest accrual (simple daily interest or balloon payment)
-- [ ] Write LiteSVM unit tests for all error paths
+- [ ] Link `submit_verification` to specific `Asset` PDAs (currently just farmer-level)
+- [ ] Add `clearVerification` instruction for post-window cleanup
 
 ## Build & test
 
@@ -56,7 +85,7 @@ anchor deploy --provider.cluster devnet
 - **Framework**: Anchor 0.31.0
 - **Livestock tags**: MPL Bubblegum 1.4 (cNFTs)
 - **Stablecoin**: USDC (SPL Token)
-- **Test framework**: LiteSVM (unit) + Surfpool (integration)
+- **Test framework**: anchor-bankrun (unit, 33 tests) + Surfpool (integration)
 - **RPC**: Helius (DAS API for cNFT queries)
 - **Risk scoring**: Off-chain AI model → on-chain oracle PDA
 

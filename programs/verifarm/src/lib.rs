@@ -9,6 +9,7 @@ use instructions::asset::*;
 use instructions::risk::*;
 use instructions::loan::*;
 use instructions::admin::*;
+use instructions::agent::*;
 
 declare_id!("9teMVR4r2AB9T5bB4YgXJ38G6mMbxTF6bFm8UYizqx8N");
 
@@ -87,5 +88,26 @@ pub mod verifarm {
 
     pub fn liquidate_loan(ctx: Context<LiquidateLoan>) -> Result<()> {
         instructions::loan::liquidate::handler(ctx)
+    }
+
+    // ── Agent Staking (anti-fraud) ────────────────────────────────────────────
+    pub fn register_agent(ctx: Context<RegisterAgent>, stake_lamports: u64) -> Result<()> {
+        instructions::agent::register_agent::handler(ctx, stake_lamports)
+    }
+
+    pub fn submit_verification(ctx: Context<SubmitVerification>) -> Result<()> {
+        instructions::agent::submit_verification::handler(ctx)
+    }
+
+    pub fn dispute_verification(ctx: Context<DisputeVerification>) -> Result<()> {
+        instructions::agent::dispute_verification::handler(ctx)
+    }
+
+    pub fn confirm_dispute(ctx: Context<ConfirmDispute>) -> Result<()> {
+        instructions::agent::confirm_dispute::handler(ctx)
+    }
+
+    pub fn withdraw_stake(ctx: Context<WithdrawStake>) -> Result<()> {
+        instructions::agent::withdraw_stake::handler(ctx)
     }
 }

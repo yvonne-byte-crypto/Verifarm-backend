@@ -32,4 +32,26 @@ pub enum VeriFarmError {
     LoanAmountTooSmall,
     #[msg("Loan amount exceeds maximum allowed for this risk tier")]
     LoanAmountTooLarge,
+
+    // ── Agent staking ──────────────────────────────────────────────────────
+    #[msg("Agent is not registered — call register_agent first")]
+    AgentNotRegistered,
+    #[msg("Agent is already registered")]
+    AgentAlreadyRegistered,
+    #[msg("Agent is suspended and cannot submit verifications")]
+    AgentSuspended,
+    #[msg("Stake amount is below the minimum required (0.1 SOL)")]
+    InsufficientStake,
+    #[msg("The 72-hour dispute window has expired for this verification")]
+    DisputeWindowExpired,
+    #[msg("This verification still has an active dispute window — stake is locked")]
+    DisputeWindowActive,
+    #[msg("Verification is not in Pending status")]
+    VerificationNotPending,
+    #[msg("Verification is not in Disputed status")]
+    VerificationNotDisputed,
+    #[msg("Agent has active verifications pending — resolve disputes before withdrawing")]
+    ActiveVerificationsPending,
+    #[msg("Caller is not authorised to perform this action")]
+    Unauthorized,
 }
