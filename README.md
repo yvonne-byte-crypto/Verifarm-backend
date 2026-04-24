@@ -104,6 +104,10 @@ Score breakdown example:
 Total Score: 85 / 100 — Low Risk
 Max Eligible Loan: TZS 420,000 at 50% LTV
 ```
+Scores are decomposed into four weighted factors: GPS 
+polygon quality, attestation age, agent stake history, 
+and M-Pesa repayment record — displayed as a visual 
+breakdown per borrower profile on the lender dashboard.
 
 ---
 
@@ -130,6 +134,18 @@ All sensitive farmer data is hashed on-chain. Raw data
 is only accessible to authorized MFI PDAs through
 program-gated instructions.
 
+**Community Collusion Defense:**
+World ID prevents sybil attacks — one human, one agent 
+account. To prevent self-dealing between legitimate agents 
+in the same community, VeriFarm enforces geographic 
+independence: cross-attesting agents must operate from GPS 
+coordinates more than 50km from the primary agent's 
+registered location. Any agent can challenge a boundary 
+attestation and earn the slashed stake if the dispute is 
+upheld by a threshold of geographically distant observers.
+This makes community-level collusion economically irrational 
+even among World ID verified agents.
+
 ---
 
 ## 🔐 Privacy & Compliance
@@ -153,13 +169,17 @@ AML requirements.
 
 VeriFarm provides verification and scoring rails —
 licensed MFIs and SACCOs provide regulated capital.
+CASH (Phantom Frontier) is used for loan disbursement. 
+The lender dashboard allows MFI partners to configure 
+an alternative stablecoin fallback (USDC, USDT) to 
+mitigate single-stablecoin concentration risk.
 
 - Currently in conversations with FINCA Tanzania,
   BRAC Tanzania, Equity Bank Tanzania, and NMB Bank
 - Initial pilot target: Manyara, Tanzania
 - VeriFarm earns oracle attestation fee per verified farmer
 - Farmers always access VeriFarm for free
-
+- 
 ---
 
 ## 🧪 Running Tests
