@@ -222,9 +222,12 @@ anchor deploy --provider.cluster devnet
 - [x] Agent staking anti-fraud layer
 - [x] Staleness TTL on boundary attestations
 - [ ] Africa's Talking USSD production number
-- [ ] Enhanced livestock attestation — mandatory photo 
-  hash on-chain (Arweave) + higher stake requirement 
-  (Phase 2)
+- [ ] Livestock attestation Phase 2 — field agents 
+  submit photo hashes anchored on Arweave, 
+  cross-validated against peer attestations within 
+  5km radius. On-chain data model supports this 
+  today — Phase 2 unlock is Arweave integration 
+  and minimum-distance observer requirement.
 - [ ] Continuous livestock health oracle
 - [ ] MFI partner API integration
 - [ ] Geographic diversity enforcement
