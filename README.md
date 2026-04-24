@@ -77,6 +77,9 @@ Agent registers → Stakes SOL → Submits verification
                               Fraud confirmed → Stake slashed
                               Agent suspended permanently
 ```
+World ID IDKit widget integrated for agent registration 
+UX — server-side proof verification scoped for 
+production deployment
 
 ---
 
